@@ -22,17 +22,17 @@ const { createUser, login } = require('./controllers/users');
 
 const limiter = require('./middlewares/limiter');
 
-mongoose.connect('mongodb://localhost:27017/diplomDB');
+mongoose.connect('mongodb://localhost:27017/moviesdb');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({
   origin: [
-    'https://klementeva.students.nomoredomains.sbs',
-    'http://klementeva.students.nomoredomains.sbs',
-    'https://api.klementeva.students.nomoredomains.sbs',
-    'http://api.klementeva.students.nomoredomains.sbs',
+    'https://klementeva.nomoredomains.sbs',
+    'http://klementeva.nomoredomains.sbs',
+    'https://api.klementeva.nomoredomains.sbs',
+    'http://api.klementeva.nomoredomains.sbs',
     'http://localhost:3000',
     'https://locahost:3000',
     'http://localhost:3001',
