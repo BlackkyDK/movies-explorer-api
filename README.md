@@ -1,5 +1,5 @@
 # movies-explorer-api
 
-Дипломный проект ЯП Клементьевой Галины
+Дипломный проект Клементьевой Галины.
 
 Ссылка на backend: https://api.klementeva.nomoredomains.sbs
