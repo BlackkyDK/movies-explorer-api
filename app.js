@@ -13,11 +13,11 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/error-handler');
 
 const app = express();
-const { PORT = 3000, NODE_ENV, MONGO_DB } = process.env;
+const { PORT, MONGO_DB } = require('./utils/config');
 
 const limiter = require('./middlewares/limiter');
 
-mongoose.connect(NODE_ENV === 'production' ? MONGO_DB : 'mongodb://localhost:27017/moviesdb');
+mongoose.connect(MONGO_DB);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
