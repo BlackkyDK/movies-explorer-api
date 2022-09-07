@@ -7,17 +7,17 @@ const bodyParser = require('body-parser');
 
 const { errors } = require('celebrate');
 const cors = require('cors');
-const routes = require('./routes/index');
+const router = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const errorHandler = require('./middlewares/error-handler');
 
 const app = express();
-const { PORT, MONGO_DB } = require('./utils/config');
+const { PORT = 3000 } = process.env;
 
 const limiter = require('./middlewares/limiter');
 
-mongoose.connect(MONGO_DB);
+mongoose.connect('mongodb://localhost:27017/moviesdb');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -42,7 +42,7 @@ app.use(helmet());
 app.use(requestLogger);
 app.use(limiter);
 
-app.use(routes);
+app.use(router);
 
 app.use(errorLogger);
 app.use(errors());
