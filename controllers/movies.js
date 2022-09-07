@@ -6,7 +6,7 @@ const NotFound = require('../errors/NotFound');
 const getMovies = (req, res, next) => {
   Movie.find({})
     .then((movies) => res.send({ data: movies }))
-    .catch((err) => next(err));
+    .catch(next);
 };
 
 const createMovie = (req, res, next) => {
@@ -43,14 +43,13 @@ const deleteMovie = (req, res, next) => {
   Movie.findById(req.params.movieId)
     .then((movie) => {
       if (!movie) {
-        next(new NotFound('Фильм с указанным _id не найден.'));
-      } else if (req.user._id !== movie.owner.toString()) {
-        next(new Forbidden('Отсутствуют права для удаления данного фильма'));
-      } else {
-        Movie.findByIdAndRemove(req.params.movieId).then((removedMovie) => {
-          res.send({ data: removedMovie });
-        });
+        return next(new NotFound('Фильм с указанным _id не найден.'));
+      } if (req.user._id !== movie.owner.toString()) {
+        return next(new Forbidden('Отсутствуют права для удаления данного фильма'));
       }
+      return Movie.findByIdAndRemove(req.params.movieId).then(() => {
+        res.send({ message: 'ok' });
+      });
     })
     .catch((err) => {
       if (err.name === 'CastError') {

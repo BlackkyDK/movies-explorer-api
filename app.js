@@ -7,22 +7,17 @@ const bodyParser = require('body-parser');
 
 const { errors } = require('celebrate');
 const cors = require('cors');
-const { validateUserCreate, validateUserLogin } = require('./middlewares/celebrate');
+const routes = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const auth = require('./middlewares/auth');
-
-const NotFound = require('./errors/NotFound');
 const errorHandler = require('./middlewares/error-handler');
 
 const app = express();
-const { PORT = 3000 } = process.env;
-
-const { createUser, login } = require('./controllers/users');
+const { PORT = 3000, NODE_ENV, MONGO_DB } = process.env;
 
 const limiter = require('./middlewares/limiter');
 
-mongoose.connect('mongodb://localhost:27017/moviesdb');
+mongoose.connect(NODE_ENV === 'production' ? MONGO_DB : 'mongodb://localhost:27017/moviesdb');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -46,17 +41,8 @@ app.use(cors({
 app.use(helmet());
 app.use(requestLogger);
 app.use(limiter);
-app.post('/signup', validateUserCreate, createUser);
-app.post('/signin', validateUserLogin, login);
 
-app.use(auth);
-
-app.use('/users', require('./routes/users'));
-app.use('/movies', require('./routes/movies'));
-
-app.use((req, res, next) => {
-  next(new NotFound('Страница не найдена'));
-});
+app.use(routes);
 
 app.use(errorLogger);
 app.use(errors());
