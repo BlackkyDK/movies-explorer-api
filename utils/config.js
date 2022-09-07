@@ -2,12 +2,12 @@ require('dotenv').config();
 
 const {
   PORT = 3000,
-  MONGODB_CONNECT = 'mongodb://localhost:27017/moviesdb',
+  MONGO_DB = 'mongodb://localhost:27017/moviesdb',
   NODE_ENV = 'dev',
 } = process.env;
 
 module.exports = {
   PORT,
-  MONGODB_CONNECT,
+  MONGO_DB,
   NODE_ENV,
 };
