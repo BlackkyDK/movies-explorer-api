@@ -5,7 +5,9 @@ const NotFound = require('../errors/NotFound');
 
 const getMovies = (req, res, next) => {
   Movie.find({})
-    .then((movies) => res.send({ data: movies }))
+    .then((movie) => {
+      res.send(movie);
+    })
     .catch(next);
 };
 
@@ -29,7 +31,7 @@ const createMovie = (req, res, next) => {
     nameEN,
     owner: req.user._id,
   })
-    .then((movie) => res.send({ data: movie }))
+    .then((movie) => res.send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные при создании фильма.'));
